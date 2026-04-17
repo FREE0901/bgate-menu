@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B-GATE GRAND MENU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+/* ===== VARIABLES ===== */
+:root{
+  --kr:   #C8A97A;  /* kraft base */
+  --kr2:  #B08A55;  /* kraft mid */
+  --kr3:  #7A5A2A;  /* kraft dark */
+  --ch:   #1A1A1A;  /* charcoal */
+  --ch2:  #2D2D2D;  /* charcoal mid */
+  --ch3:  #3E3E3E;  /* charcoal sub */
+  --ink:  #0D0D0D;
+  --ow:   #F5F0E8;  /* off-white */
+  --red:  #CC2200;
+  --redd: #991900;
+  --yel:  #F5C300;
+  --gold: #C8960A;
+  --gldl: #E0B030;
+  --win:  #1A6618;
+  --drw:  #1A3A8A;
+}
+
+/* ===== BODY ===== */
+body{
+  background:#555;
+  padding:20px;
+  font-family:'Noto Sans JP','ヒラギノ角ゴシック','Hiragino Sans',sans-serif;
+}
+
+/* ===== PAGE BASE ===== */
+.page{
+  width:794px;
+  height:1123px;
+  position:relative;
+  overflow:hidden;
+  margin:0 auto 24px;
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  flex-direction:column;
+}
+.kraft{ background-image:url('output_plan_b/_gen_bg_kraft.png'); }
+.dark { background-image:url('output_plan_b/_gen_bg_dark.png'); }
+
+/* Overlay for legibility */
+.kraft::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(200,169,122,0.18);
+  pointer-events:none;z-index:0;
+}
+.dark::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(18,18,18,0.35);
+  pointer-events:none;z-index:0;
+}
+.page > *{ position:relative;z-index:1; }
+
+/* ===== PRINT ===== */
+@media print{
+  body{background:white;padding:0;}
+  .page{
+    width:210mm;height:297mm;
+    margin:0;
+    page-break-after:always;
+    break-after:page;
+  }
+}
+
+/* ===== CORNER ORNAMENTS ===== */
+.corners::before,.corners::after,
+.corners .c2::before,.corners .c2::after{
+  content:'';position:absolute;
+  border-color:var(--kr3);border-style:solid;
+  width:55px;height:55px;
+}
+.corners::before{top:28px;left:28px;border-width:2px 0 0 2px;}
+.corners::after {top:28px;right:28px;border-width:2px 2px 0 0;}
+.corners .c2::before{bottom:28px;left:28px;border-width:0 0 2px 2px;}
+.corners .c2::after {bottom:28px;right:28px;border-width:0 2px 2px 0;}
+.dark-corners .corners::before,.dark-corners .corners::after,
+.dark-corners .corners .c2::before,.dark-corners .corners .c2::after{
+  border-color:var(--gold);opacity:.7;
+}
+
+/* Inner corner lines */
+.corners .ci1::before,.corners .ci1::after,
+.corners .ci2::before,.corners .ci2::after{
+  content:'';position:absolute;
+  border-color:var(--kr3);border-style:solid;opacity:.35;
+  width:40px;height:40px;
+}
+.corners .ci1::before{top:36px;left:36px;border-width:1px 0 0 1px;}
+.corners .ci1::after {top:36px;right:36px;border-width:1px 1px 0 0;}
+.corners .ci2::before{bottom:36px;left:36px;border-width:0 0 1px 1px;}
+.corners .ci2::after {bottom:36px;right:36px;border-width:0 1px 1px 0;}
+
+/* ===== PAGE NUMBER ===== */
+.pnum{
+  position:absolute;bottom:22px;right:38px;
+  font-size:10px;font-weight:700;letter-spacing:.2em;
+  color:var(--kr3);opacity:.7;
+}
+.dark .pnum{color:var(--gold);}
+
+/* ===== EYEBROW (magazine section label) ===== */
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-size:9.5px;font-weight:700;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--kr3);
+}
+.eyebrow::before,.eyebrow::after{
+  content:'';flex:1;max-width:45px;height:1px;background:currentColor;
+}
+.dark .eyebrow{color:var(--gold);}
+
+/* ===== UTILITY ===== */
+.rule{width:100%;height:2px;background:var(--kr3);opacity:.45;}
+.rule.gold{background:var(--gold);opacity:.8;}
+.rule.thin{height:1px;opacity:.3;}
+.rule.dashed{background:none;border-top:2px dashed var(--kr3);opacity:.4;}
+
+.tag{
+  display:inline-block;
+  padding:4px 14px;border-radius:2px;
+  font-weight:900;letter-spacing:.04em;
+}
+.tag.red{background:var(--red);color:#fff;}
+.tag.yel{background:var(--yel);color:var(--ink);}
+.tag.dark{background:var(--ch);color:var(--ow);}
+.tag.gold{background:var(--gold);color:#fff;}
+.tag.win{background:var(--win);color:#fff;}
+.tag.drw{background:var(--drw);color:#fff;}
+.tag.lose{background:var(--red);color:#fff;}
+
+.diamond{
+  display:inline-block;
+  width:10px;height:10px;
+  background:var(--yel);
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+
+
+/* ========================================
+   PAGE 1 — COVER
+   ======================================== */
+#p1{justify-content:space-between;padding:0;}
+
+#p1 .top-bar{
+  padding:42px 50px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+#p1 .tagline-en{
+  font-size:11.5px;font-weight:700;letter-spacing:.32em;
+  color:var(--kr3);text-transform:uppercase;
+  border:1px solid var(--kr3);padding:3px 18px;opacity:.8;
+}
+#p1 .brand{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:140px;line-height:.88;
+  color:var(--ink);
+  text-shadow:4px 4px 0 var(--kr2),-1px -1px 0 var(--kr3);
+  letter-spacing:.03em;
+}
+#p1 .brand-sub{
+  font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--kr3);
+}
+
+#p1 .rule-block{padding:0 50px;}
+
+#p1 .hero{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:0 40px;gap:10px;
+}
+#p1 .tilde{
+  font-size:54px;font-weight:900;color:var(--kr3);opacity:.6;
+  letter-spacing:-.02em;line-height:1;
+}
+#p1 .grand{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:152px;line-height:.86;
+  color:var(--ink);
+  letter-spacing:.08em;
+  -webkit-text-stroke:2px var(--kr3);
+}
+#p1 .menu-word{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:95px;line-height:1;
+  letter-spacing:.25em;
+  color:transparent;
+  -webkit-text-stroke:3px var(--ink);
+}
+#p1 .edition{
+  font-size:10px;font-weight:700;letter-spacing:.3em;
+  color:var(--kr3);text-transform:uppercase;margin-top:4px;
+}
+
+#p1 .concept{
+  padding:24px 50px 44px;
+  display:flex;flex-direction:column;
+  align-items:center;gap:12px;
+  text-align:center;
+}
+#p1 .concept-lead{
+  font-size:22px;font-weight:900;color:var(--ink);
+  letter-spacing:.06em;
+}
+#p1 .concept-items{
+  font-size:15.5px;font-weight:700;color:var(--ink);
+  letter-spacing:.08em;
+  display:flex;align-items:center;gap:16px;
+}
+#p1 .concept-sep{
+  color:var(--kr3);opacity:.5;font-size:20px;
+}
+#p1 .concept-cta{
+  font-size:19px;font-weight:900;color:var(--red);
+  letter-spacing:.04em;
+  padding:10px 32px;
+  border:2px solid var(--red);
+  border-radius:2px;
+  background:rgba(204,34,0,.07);
+}
+
+
+/* ========================================
+   PAGE 2 — RULES
+   ======================================== */
+#p2{padding:44px 50px 30px;}
+
+#p2 .title-box{
+  border:2.5px solid var(--ink);
+  padding:10px 20px 12px;
+  text-align:center;margin-bottom:6px;
+  background:rgba(0,0,0,.03);
+}
+#p2 .title-box h1{
+  font-size:54px;font-weight:900;color:var(--ink);
+  letter-spacing:.04em;line-height:1.1;
+}
+#p2 .title-box .sub{
+  font-size:11.5px;font-weight:500;color:var(--kr3);
+  letter-spacing:.06em;margin-top:2px;
+}
+
+#p2 .sec-hdr{
+  background:var(--yel);
+  padding:8px 14px;
+  display:flex;align-items:center;gap:10px;
+  margin:10px 0 8px;
+}
+#p2 .sec-hdr .label{
+  font-size:18px;font-weight:900;color:var(--ink);letter-spacing:.03em;
+}
+#p2 .sec-hdr .note{
+  font-size:10.5px;font-weight:700;color:var(--red);margin-left:auto;
+}
+
+#p2 .rules-block{
+  display:flex;gap:12px;
+}
+#p2 .rules-list{
+  flex:1;
+  display:flex;flex-direction:column;gap:6px;
+}
+#p2 .rule-item{
+  display:flex;gap:8px;align-items:flex-start;
+  font-size:13px;font-weight:500;color:var(--ink);
+  line-height:1.6;
+}
+#p2 .rule-item .bul{
+  font-weight:900;font-size:16px;color:var(--ink);
+  flex-shrink:0;margin-top:1px;
+}
+#p2 .rule-item .sub-rule{
+  display:block;font-size:11px;color:var(--kr3);margin-top:1px;
+  padding-left:0;
+}
+
+#p2 .warn-badge{
+  flex-shrink:0;width:72px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:2.5px solid var(--yel);gap:4px;
+  padding:8px 0;
+}
+#p2 .warn-badge .tri{
+  font-size:36px;color:var(--yel);line-height:1;
+}
+#p2 .warn-badge .wlabel{
+  font-size:9px;font-weight:900;color:var(--ink);letter-spacing:.1em;
+}
+
+#p2 .three-col{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:12px;margin:8px 0;
+}
+#p2 .col-item{}
+#p2 .col-title{
+  font-size:14px;font-weight:900;color:var(--ink);
+  letter-spacing:.04em;margin-bottom:4px;
+  display:flex;align-items:center;gap:6px;
+}
+#p2 .col-icon{font-size:18px;}
+#p2 .col-body{
+  font-size:11.5px;font-weight:400;color:var(--ink);
+  line-height:1.7;
+}
+
+#p2 .notice{
+  background:var(--ch);padding:9px 14px;margin-top:8px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+#p2 .notice .ntag{
+  font-size:12px;font-weight:900;color:var(--yel);
+  white-space:nowrap;flex-shrink:0;
+}
+#p2 .notice .nbody{
+  font-size:12px;color:var(--ow);line-height:1.6;
+}
+
+#p2 .footer-stmt{
+  margin-top:auto;padding-top:14px;border-top:1.5px solid var(--kr3);
+  text-align:center;
+}
+#p2 .footer-stmt p{
+  font-size:14.5px;font-weight:700;color:var(--ink);
+  line-height:1.9;letter-spacing:.04em;
+}
+
+
+/* ========================================
+   PAGE 3 — GAME MENU
+   ======================================== */
+#p3{padding:0;}
+
+#p3 .head-bar{
+  background:var(--ch);
+  padding:16px 44px;
+  display:flex;align-items:center;gap:16px;
+}
+#p3 .head-bar .icon{font-size:32px;}
+#p3 .head-bar .texts{}
+#p3 .head-bar .main-head{
+  font-size:44px;font-weight:900;color:var(--ow);
+  letter-spacing:.02em;line-height:1;
+}
+#p3 .head-bar .main-head .accent{color:var(--red);}
+#p3 .head-bar .sub-head{
+  font-size:13px;font-weight:700;color:rgba(245,240,232,.55);
+  letter-spacing:.12em;margin-top:3px;
+}
+
+/* Three game sections */
+#p3 .game-sections{
+  flex:1;display:flex;flex-direction:column;
+}
+#p3 .gsec{
+  flex:1;padding:16px 44px;
+  display:flex;flex-direction:column;gap:8px;
+  border-bottom:2px solid rgba(0,0,0,.18);
+}
+#p3 .gsec:last-child{border-bottom:none;}
+#p3 .gsec.alt{background:rgba(0,0,0,.06);}
+
+#p3 .gsec-title{
+  font-size:36px;font-weight:900;color:var(--ink);
+  letter-spacing:.03em;line-height:1;
+}
+.dark-band #p3 .gsec-title{color:var(--ow);}
+
+/* じゃんけん */
+#p3 .jk-outcomes{
+  display:flex;flex-direction:column;gap:8px;
+}
+#p3 .jk-row{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.4);
+  border-left:4px solid var(--kr3);
+  padding:9px 16px;
+}
+#p3 .jk-row.win-row{border-color:var(--win);background:rgba(26,102,24,.07);}
+#p3 .jk-row.drw-row{border-color:var(--drw);background:rgba(26,58,138,.06);}
+#p3 .jk-row.los-row{border-color:var(--red);background:rgba(204,34,0,.07);}
+#p3 .jk-en{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:19px;letter-spacing:.1em;
+  min-width:52px;
+}
+#p3 .win-row .jk-en{color:var(--win);}
+#p3 .drw-row .jk-en{color:var(--drw);}
+#p3 .los-row .jk-en{color:var(--red);}
+#p3 .jk-jp{font-size:14px;font-weight:700;color:var(--ink);}
+#p3 .jk-arrow{font-size:18px;color:var(--kr3);}
+#p3 .jk-result{font-size:22px;font-weight:900;color:var(--ink);}
+#p3 .win-row .jk-result{color:var(--win);}
+#p3 .los-row .jk-result{color:var(--red);}
+#p3 .jk-note{
+  font-size:10.5px;font-weight:500;color:var(--kr3);margin-top:2px;
+  line-height:1.7;
+}
+
+/* ルーレット & がちゃ */
+#p3 .game-row{
+  display:flex;gap:18px;align-items:center;flex:1;
+}
+#p3 .game-photo{
+  width:210px;flex-shrink:0;
+  height:160px;
+  border-radius:3px;overflow:hidden;
+  border:2px solid var(--kr3);opacity:.92;
+}
+#p3 .game-photo img{
+  width:100%;height:100%;object-fit:cover;
+}
+#p3 .game-text{}
+#p3 .suspense{
+  font-size:12px;font-style:italic;color:var(--kr3);
+  letter-spacing:.1em;margin-bottom:4px;
+}
+#p3 .jackpot-label{
+  font-size:13px;font-weight:700;color:var(--ink);
+}
+#p3 .jackpot{
+  font-size:28px;font-weight:900;color:var(--red);
+  letter-spacing:.02em;line-height:1.2;margin:4px 0;
+}
+#p3 .jackpot-note{
+  font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;
+}
+#p3 .price-tag{
+  display:inline-flex;align-items:baseline;gap:5px;
+  background:var(--ch);color:var(--ow);
+  padding:5px 18px;
+}
+#p3 .price-tag .yen{font-size:22px;font-weight:900;}
+#p3 .price-tag .unit{font-size:11px;font-weight:700;opacity:.7;}
+
+#p3 .gacha-text{font-size:14px;font-weight:700;color:var(--ink);line-height:1.8;}
+#p3 .gacha-jackpot{font-size:18px;font-weight:900;color:var(--red);margin:4px 0;}
+
+
+/* ========================================
+   PAGE 4 — FAMOUS FOUR
+   ======================================== */
+#p4{padding:0;}
+
+#p4 .p4-header{
+  padding:20px 44px 14px;
+  border-bottom:1px solid rgba(200,150,10,.3);
+}
+#p4 .p4-title{
+  font-size:70px;font-weight:900;line-height:.92;
+  letter-spacing:.01em;
+}
+#p4 .p4-title .brand-part{color:var(--ow);}
+#p4 .p4-title .meisho{color:var(--red);}
+#p4 .p4-title .shitenno{color:var(--gldl);}
+#p4 .p4-sub{
+  font-size:14.5px;font-weight:700;color:var(--gold);
+  letter-spacing:.06em;margin-top:6px;
+}
+#p4 .gold-rule{
+  height:1.5px;background:linear-gradient(90deg,var(--gold),transparent);
+  margin-top:10px;
+}
+
+#p4 .grid{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:3px;
+  padding:3px;
+  background:var(--ch);
+}
+#p4 .cell{
+  background:var(--ch2);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  position:relative;
+}
+#p4 .cell-photo{
+  height:220px;flex-shrink:0;overflow:hidden;
+}
+#p4 .cell-photo img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+}
+#p4 .cell-body{
+  flex:1;padding:12px 16px 14px;
+  display:flex;flex-direction:column;gap:5px;
+}
+#p4 .cell-crown{
+  font-size:16px;color:var(--gold);line-height:1;
+}
+#p4 .cell-jp{
+  font-size:22px;font-weight:900;color:var(--ow);
+  letter-spacing:.02em;line-height:1.15;
+}
+#p4 .cell-en{
+  font-size:11px;font-weight:500;color:var(--gold);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+#p4 .cell-badge{
+  display:inline-block;
+  background:var(--red);color:#fff;
+  font-size:10.5px;font-weight:900;
+  padding:2px 10px;
+  align-self:flex-start;margin-top:2px;
+}
+#p4 .cell-desc{
+  font-size:11.5px;font-weight:400;color:rgba(245,240,232,.7);
+  line-height:1.7;
+}
+#p4 .cell-price{
+  margin-top:auto;
+  font-size:22px;font-weight:900;color:var(--ow);
+  letter-spacing:.02em;
+}
+#p4 .cell-note{
+  font-size:10px;color:rgba(245,240,232,.45);
+}
+
+
+/* ========================================
+   PAGE 5 — BEER SNACKS
+   ======================================== */
+#p5{padding:0;}
+
+#p5 .p5-title-bar{
+  padding:20px 44px 12px;
+  display:flex;align-items:baseline;gap:18px;
+  border-bottom:2px solid var(--ink);
+}
+#p5 .p5-title-jp{
+  font-size:52px;font-weight:900;color:var(--ink);
+  letter-spacing:.01em;line-height:1;
+}
+#p5 .p5-title-en{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:38px;letter-spacing:.12em;color:var(--kr3);
+}
+#p5 .p5-beer{font-size:30px;}
+
+/* Red promo box */
+#p5 .promo{
+  margin:0;
+  background:var(--red);
+  padding:18px 44px;
+  display:flex;gap:20px;align-items:stretch;
+}
+#p5 .promo-left{flex:1;display:flex;flex-direction:column;gap:8px;}
+
+#p5 .promo-oshi{
+  display:inline-block;
+  background:var(--yel);color:var(--ink);
+  font-size:10px;font-weight:900;letter-spacing:.18em;
+  padding:2px 12px;align-self:flex-start;
+}
+#p5 .promo-sub{
+  font-size:13px;font-weight:700;color:rgba(255,255,255,.75);
+  letter-spacing:.12em;
+}
+#p5 .promo-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:72px;line-height:.9;letter-spacing:.04em;
+  color:#fff;margin:2px 0;
+}
+#p5 .promo-choices{
+  font-size:12px;font-weight:700;color:rgba(255,255,255,.8);
+  letter-spacing:.06em;
+  display:flex;align-items:center;gap:10px;
+}
+#p5 .promo-choices .or{opacity:.5;}
+
+#p5 .promo-outcomes{display:flex;flex-direction:column;gap:5px;margin-top:4px;}
+#p5 .promo-row{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(0,0,0,.25);padding:6px 12px;
+}
+#p5 .promo-row .pr-tag{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:14px;letter-spacing:.08em;
+  min-width:54px;
+}
+#p5 .promo-row.win-r .pr-tag{color:rgb(130,255,130);}
+#p5 .promo-row.drw-r .pr-tag{color:rgb(130,180,255);}
+#p5 .promo-row.los-r .pr-tag{color:#ffaa88;}
+#p5 .promo-row .pr-result{
+  font-size:15px;font-weight:700;color:#fff;
+}
+#p5 .promo-row .pr-price{
+  margin-left:auto;font-size:18px;font-weight:900;color:#fff;
+}
+
+#p5 .promo-right{
+  width:195px;flex-shrink:0;
+  border-radius:3px;overflow:hidden;
+  border:2px solid rgba(255,255,255,.3);
+}
+#p5 .promo-right img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+/* English challenge box */
+#p5 .en-box{
+  background:var(--ch);
+  padding:12px 44px;
+  display:flex;gap:22px;align-items:center;
+}
+#p5 .en-mascot{
+  font-size:36px;flex-shrink:0;
+}
+#p5 .en-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:.1em;color:var(--ow);
+  margin-bottom:5px;
+}
+#p5 .en-rules{
+  display:flex;flex-direction:column;gap:3px;
+}
+#p5 .en-rule{
+  font-size:12px;font-weight:500;color:rgba(245,240,232,.8);
+  display:flex;align-items:center;gap:8px;
+}
+#p5 .en-rule .er-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+}
+#p5 .er-dot.win-d{background:rgb(80,200,80);}
+#p5 .er-dot.drw-d{background:rgb(80,130,220);}
+#p5 .er-dot.los-d{background:var(--red);}
+
+/* Menu list */
+#p5 .menu-list{
+  padding:12px 44px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0 20px;
+}
+#p5 .mi{
+  display:flex;align-items:baseline;gap:0;
+  padding:4.5px 0;
+  border-bottom:1px dashed rgba(0,0,0,.18);
+}
+#p5 .mi-jp{font-size:13.5px;font-weight:700;color:var(--ink);}
+#p5 .mi-en{font-size:10px;font-weight:400;color:var(--kr3);margin-left:7px;}
+#p5 .mi-price{
+  margin-left:auto;font-size:15px;font-weight:900;color:var(--ink);
+  white-space:nowrap;
+}
+
+/* Danger item */
+#p5 .danger{
+  margin:8px 44px 0;
+  border:2.5px solid var(--ink);
+  overflow:hidden;
+}
+#p5 .danger-stripe{
+  height:10px;
+  background:repeating-linear-gradient(
+    -45deg,
+    var(--yel) 0,var(--yel) 8px,
+    var(--ink) 8px,var(--ink) 16px
+  );
+}
+#p5 .danger-body{
+  padding:10px 16px;
+  display:flex;gap:14px;align-items:center;
+  background:rgba(255,245,230,.9);
+}
+#p5 .danger-icon{font-size:38px;flex-shrink:0;}
+#p5 .danger-text{}
+#p5 .danger-name{
+  font-size:17px;font-weight:900;color:var(--ink);
+  letter-spacing:.03em;
+}
+#p5 .danger-en{
+  font-size:11px;font-weight:700;color:var(--kr3);letter-spacing:.08em;
+}
+#p5 .danger-price{
+  font-size:26px;font-weight:900;color:var(--red);margin-left:auto;
+  align-self:center;flex-shrink:0;
+}
+#p5 .danger-desc{
+  font-size:11.5px;font-weight:500;color:var(--ink);
+  line-height:1.6;margin-top:3px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================
+     PAGE 1 — COVER
+     ============================ -->
+<div class="page kraft" id="p1">
+  <div class="corners"><div class="c2"></div><div class="ci1"></div><div class="ci2"></div></div>
+
+  <div class="top-bar">
+    <span class="tagline-en">「 Yakiniku &amp; Kaisen 」 Sakaba</span>
+    <div class="brand">B-GATE</div>
+    <span class="brand-sub">— AICHI · CHITA SHINKAIFU —</span>
+  </div>
+
+  <div class="rule-block"><div class="rule"></div></div>
+
+  <div class="hero">
+    <div class="tilde">～</div>
+    <div class="grand">GRAND</div>
+    <div class="menu-word">MENU</div>
+    <div class="tilde">～</div>
+    <div class="edition">EDITION 2024 — FULL COURSE GUIDE</div>
+  </div>
+
+  <div class="rule-block"><div class="rule"></div></div>
+
+  <div class="concept">
+    <div class="concept-lead">B-GATEは遊べる酒場。</div>
+    <div class="concept-items">
+      <span>じゃんけんドリンク</span>
+      <span class="concept-sep">×</span>
+      <span>肉肉ルーレット</span>
+      <span class="concept-sep">×</span>
+      <span>おつまみガチャ</span>
+    </div>
+    <div class="concept-cta">まずはどれかやってみてください！</div>
+  </div>
+
+  <span class="pnum">01 / 05</span>
+</div>
+
+
+<!-- ============================
+     PAGE 2 — RULES
+     ============================ -->
+<div class="page kraft" id="p2">
+  <div class="corners"><div class="c2"></div></div>
+
+  <div class="eyebrow" style="padding:32px 50px 10px;">Guest Guide</div>
+
+  <div class="title-box">
+    <h1>「ご利用案内」</h1>
+    <p class="sub">～ 下記を必ず一読いただき、ご了承の上ご利用ください ～</p>
+  </div>
+
+  <!-- Section A: 飲み放題 -->
+  <div style="padding:0 50px;">
+    <div class="sec-hdr">
+      <span class="diamond"></span>
+      <span class="label">飲み放題ご利用のお客様へ</span>
+      <span class="note">※20歳未満の方はご利用できません</span>
+    </div>
+
+    <div class="rules-block">
+      <div class="rules-list">
+        <div class="rule-item">
+          <span class="bul">●</span>
+          <span>蛇口から出るドリンクはすべてお酒です。<span class="sub-rule">ドライバーやお子様の誤飲にご注意ください。万が一誤飲された場合、当店は一切の責任を負いません。</span></span>
+        </div>
+        <div class="rule-item">
+          <span class="bul">●</span>
+          <span>飲み放題を残した場合、追加料金（¥580×人数）を頂戴致します。<span class="sub-rule">飲み放題終了後に蛇口使用を発見した場合は延長料金（¥580/30分）を頂戴します。</span></span>
+        </div>
+        <div class="rule-item">
+          <span class="bul">●</span>
+          <span>グラス交換制です。必ずお守りください。</span>
+        </div>
+        <div class="rule-item">
+          <span class="bul">●</span>
+          <span>お子様連れのお客様は事故防止のため、お子様から目を離さないようお願いいたします。</span>
+        </div>
+      </div>
+      <div class="warn-badge" style="margin-left:12px;">
+        <div class="tri">⚠</div>
+        <div class="wlabel">CAUTION</div>
+      </div>
+    </div>
+
+    <div class="rule dashed" style="margin:10px 0;"></div>
+
+    <!-- Section B: 一般ルール -->
+    <div class="rules-list">
+      <div class="rule-item">
+        <span class="bul">●</span>
+        <span>混雑時や予約状況により、席時間を2時間とさせていただく場合があります。</span>
+      </div>
+      <div class="rule-item">
+        <span class="bul">●</span>
+        <span>当店利用中の事故や怪我、体調不良等において、当店は一切の責任を負いません。</span>
+      </div>
+      <div class="rule-item">
+        <span class="bul">●</span>
+        <span>トイレ便器外での嘔吐により店内が汚れた場合、清掃代として¥5,000を頂戴します。</span>
+      </div>
+      <div class="rule-item">
+        <span class="bul">●</span>
+        <span>飲食物の持ち込みは禁止です。</span>
+      </div>
+    </div>
+
+    <!-- Section C: 設備 -->
+    <div class="sec-hdr" style="margin-top:12px;">
+      <span class="diamond"></span>
+      <span class="label">その他店内設備のご案内</span>
+    </div>
+
+    <div class="three-col">
+      <div class="col-item">
+        <div class="col-title"><span class="col-icon">🍶</span>セルフサービス</div>
+        <div class="col-body">蛇口スペース横にグラス等をご用意しております。お子様用食器や箸等もございます。ご自由にお使いください。</div>
+      </div>
+      <div class="col-item">
+        <div class="col-title"><span class="col-icon">🧊</span>消火栓に氷！？</div>
+        <div class="col-body">蛇口ドリンク用の氷は蛇口スペース左奥の消火栓風製氷機にございます。ご自由にお取りください。</div>
+      </div>
+      <div class="col-item">
+        <div class="col-title"><span class="col-icon">📷</span>撮影 OK！</div>
+        <div class="col-body">店内、蛇口、料理など撮影OKです！他のお客様への配慮はお願いします。Instagramのタグ付けお願いします！</div>
+      </div>
+    </div>
+
+    <div class="notice">
+      <span class="ntag">〈ご注意〉</span>
+      <span class="nbody">単品注文の場合、「蛇口ドリンク」は使用できません。使用を発見した場合、グループ全員分の飲み放題料金を頂戴します。</span>
+    </div>
+  </div>
+
+  <div class="footer-stmt" style="padding:0 50px;margin-top:auto;padding-bottom:32px;">
+    <p>お客様はもちろんのこと我々スタッフ一同、一緒に楽しみたいので<br>ご理解のほどよろしくお願いします</p>
+  </div>
+
+  <span class="pnum">02 / 05</span>
+</div>
+
+
+<!-- ============================
+     PAGE 3 — GAME MENU
+     ============================ -->
+<div class="page kraft" id="p3">
+
+  <div class="head-bar">
+    <div class="icon">👆</div>
+    <div class="texts">
+      <div class="main-head">ただ <span class="accent">飲む</span> けじゃ <span class="accent">もったいない</span>！！</div>
+      <div class="sub-head">B-GATE のちょい遊びメニュー — PLAY &amp; DRINK</div>
+    </div>
+  </div>
+
+  <div class="game-sections">
+
+    <!-- 乾杯じゃんけん -->
+    <div class="gsec">
+      <div style="display:flex;align-items:baseline;gap:14px;">
+        <div class="gsec-title">『乾杯じゃんけん』</div>
+        <span class="eyebrow" style="font-size:9px;">CHEERS ROCK-PAPER-SCISSORS</span>
+      </div>
+      <div class="jk-outcomes">
+        <div class="jk-row win-row">
+          <span class="jk-en">WIN</span>
+          <span class="jk-jp">勝ち</span>
+          <span class="jk-arrow">→</span>
+          <span class="jk-result">1杯 無料！</span>
+        </div>
+        <div class="jk-row drw-row">
+          <span class="jk-en">DRAW</span>
+          <span class="jk-jp">引き分け</span>
+          <span class="jk-arrow">→</span>
+          <span class="jk-result">通常オーダー 🍺</span>
+        </div>
+        <div class="jk-row los-row">
+          <span class="jk-en">LOSE</span>
+          <span class="jk-jp">負け</span>
+          <span class="jk-arrow">→</span>
+          <span class="jk-result">自分＋スタッフに乾杯</span>
+        </div>
+      </div>
+      <div class="jk-note">
+        ① ハイボール・レモンサワー・生ビールで挑戦！　② 勝敗によりスタッフと強制的に乾杯！<br>
+        ※ 車通勤・未成年スタッフはソフトドリンクで乾杯させて頂きます。スタッフ用ドリンクはミニグラスで1杯500円です。
+      </div>
+    </div>
+
+    <!-- 肉肉ルーレット -->
+    <div class="gsec alt">
+      <div style="display:flex;align-items:baseline;gap:14px;">
+        <div class="gsec-title">『肉肉！ルーレット』</div>
+        <span class="eyebrow" style="font-size:9px;">MEAT ROULETTE</span>
+      </div>
+      <div class="game-row">
+        <div class="game-photo">
+          <img src="output_plan_b/_gen_food_roulette.png" alt="肉盛り">
+        </div>
+        <div class="game-text">
+          <div class="suspense">ざわざわ... やるやらないかはあなた次第....</div>
+          <div class="jackpot-label">大当たりは ——</div>
+          <div class="jackpot">知多牛 盛り合わせ<br><span style="font-size:18px;color:var(--ink);">（¥4,000 相当）</span></div>
+          <div class="price-tag">
+            <span class="unit">1回</span>
+            <span class="yen">¥1,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- おつまみがちゃ -->
+    <div class="gsec">
+      <div style="display:flex;align-items:baseline;gap:14px;">
+        <div class="gsec-title">『おつまみがちゃ』</div>
+        <span class="eyebrow" style="font-size:9px;">SNACK GACHA</span>
+      </div>
+      <div class="game-row">
+        <div class="game-photo">
+          <img src="output_plan_b/_gen_food_sashimi.png" alt="刺身">
+        </div>
+        <div class="game-text">
+          <div class="gacha-text">
+            何を食べるか決められないそこのあなた！<br>
+            とりあえずがちゃがちゃまわしとく？？<br>
+            <span class="gacha-jackpot">大当たりは 刺身の盛り合わせ！</span>
+            他にもお得になるおつまみたくさんです！！
+          </div>
+          <div style="margin-top:8px;" class="price-tag">
+            <span class="unit">1回</span>
+            <span class="yen">¥500</span>
+          </div>
+          <div style="font-size:10.5px;color:var(--kr3);margin-top:6px;">※専用のコインをお渡しします</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <span class="pnum">03 / 05</span>
+</div>
+
+
+<!-- ============================
+     PAGE 4 — FAMOUS FOUR
+     ============================ -->
+<div class="page dark dark-corners" id="p4">
+  <div class="corners"><div class="c2"></div></div>
+
+  <div class="p4-header">
+    <div class="eyebrow" style="padding:0;margin-bottom:8px;">Signature Dishes — Must Order</div>
+    <div class="p4-title">
+      <span class="brand-part">B-GATE </span><span class="meisho">名物</span><span class="shitenno"> 四天王！</span>
+    </div>
+    <div class="p4-sub">とりあえずコレ頼んどけば間違い無し！</div>
+    <div class="gold-rule"></div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 超厚熟成豚バラ肉 -->
+    <div class="cell">
+      <div class="cell-photo">
+        <img src="output_plan_b/_gen_food_pork_belly.png" alt="豚バラ">
+      </div>
+      <div class="cell-body">
+        <div class="cell-crown">♛</div>
+        <div class="cell-jp">『超厚熟成豚バラ肉』</div>
+        <div class="cell-en">Aged Pork Belly</div>
+        <span class="cell-badge">まきまき葉付き！</span>
+        <div class="cell-desc">厚さ2センチ！B-GATEが誇る究極の熟成豚バラ肉。</div>
+        <div class="cell-price">1枚 ¥1,700</div>
+        <div class="cell-note">※1枚で2人前ほどの量です</div>
+      </div>
+    </div>
+
+    <!-- 漁師のガンガン焼き -->
+    <div class="cell">
+      <div class="cell-photo">
+        <img src="output_plan_b/_gen_food_seafood_pot.png" alt="海鮮">
+      </div>
+      <div class="cell-body">
+        <div class="cell-crown">♛</div>
+        <div class="cell-jp">『漁師のガンガン焼き』</div>
+        <div class="cell-en">Fisherman's Seafood Pot</div>
+        <span class="cell-badge">海の旨味の時限爆弾！</span>
+        <div class="cell-desc">その時に獲れた新鮮な海鮮を缶にいれ、豪快に蒸しあげる漁師料理！</div>
+        <div class="cell-price">1人前 ¥1,700</div>
+        <div class="cell-note">※オーダーは2人前から！</div>
+      </div>
+    </div>
+
+    <!-- フィッシュ＆チップス -->
+    <div class="cell">
+      <div class="cell-photo">
+        <img src="output_plan_b/_gen_food_fish_chips.png" alt="フィッシュ">
+      </div>
+      <div class="cell-body">
+        <div class="cell-crown">♛</div>
+        <div class="cell-jp">『フィッシュ＆チップス』</div>
+        <div class="cell-en">Fish &amp; Chips</div>
+        <span class="cell-badge">日本で２番目にウマい！？</span>
+        <div class="cell-desc">衣に黒ビールを使用し、研究に研究を重ねた一品。</div>
+        <div class="cell-price">レギュラー ¥880 / ラージ ¥1,380</div>
+      </div>
+    </div>
+
+    <!-- 愛知県産刺盛り -->
+    <div class="cell">
+      <div class="cell-photo">
+        <img src="output_plan_b/_gen_food_sashimi.png" alt="刺身">
+      </div>
+      <div class="cell-body">
+        <div class="cell-crown">♛</div>
+        <div class="cell-jp">『愛知県産刺盛り』</div>
+        <div class="cell-en">Sashimi — Aichi Local Catch</div>
+        <span class="cell-badge">ネタは日替わり！</span>
+        <div class="cell-desc">地の海鮮を使用したB-GATEこだわりの刺盛り。まじで普通の居酒屋レベル超えてきます。</div>
+        <div class="cell-price">¥1,500〜</div>
+      </div>
+    </div>
+
+  </div>
+
+  <span class="pnum">04 / 05</span>
+</div>
+
+
+<!-- ============================
+     PAGE 5 — BEER SNACKS
+     ============================ -->
+<div class="page kraft" id="p5">
+
+  <div class="p5-title-bar">
+    <span class="p5-title-jp">おつまみ揚げ物</span>
+    <span class="p5-title-en">Beer Snacks</span>
+    <span class="p5-beer">🍺</span>
+  </div>
+
+  <!-- Red promo box -->
+  <div class="promo">
+    <div class="promo-left">
+      <span class="promo-oshi">推し メニュー</span>
+      <div class="promo-sub">日本で２番目にウマイ！？</div>
+      <div class="promo-title">ジャンケン<br>チップス</div>
+      <div class="promo-choices">
+        <span>フィッシュ＆チップス</span>
+        <span class="or">or</span>
+        <span>チキン＆チップス</span>
+      </div>
+      <div class="promo-outcomes">
+        <div class="promo-row win-r">
+          <span class="pr-tag">✊ WIN 勝ち</span>
+          <span class="pr-result">→ 無料</span>
+          <span class="pr-price">¥ 0</span>
+        </div>
+        <div class="promo-row drw-r">
+          <span class="pr-tag">✌ DRAW あいこ</span>
+          <span class="pr-result">→ レギュラーのまま提供</span>
+          <span class="pr-price">¥880</span>
+        </div>
+        <div class="promo-row los-r">
+          <span class="pr-tag">✋ LOSE 負け</span>
+          <span class="pr-result">→ ラージに強制変更！</span>
+          <span class="pr-price">¥1,380</span>
+        </div>
+      </div>
+    </div>
+    <div class="promo-right">
+      <img src="output_plan_b/_gen_food_fish_chips.png" alt="フィッシュ＆チップス">
+    </div>
+  </div>
+
+  <!-- English challenge -->
+  <div class="en-box">
+    <div class="en-mascot">🐕</div>
+    <div>
+      <div class="en-title">Rock-Paper-Scissors Challenge! — Fish or Chicken &amp; Chips</div>
+      <div class="en-rules">
+        <div class="en-rule"><span class="er-dot win-d"></span>If you win → It's Free!!</div>
+        <div class="en-rule"><span class="er-dot drw-d"></span>If it's a draw → Buy the Regular size.</div>
+        <div class="en-rule"><span class="er-dot los-d"></span>If you lose → You must buy the Large size.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu list -->
+  <div class="menu-list">
+    <div class="mi">
+      <span class="mi-jp">・ふぐのから揚げ</span><span class="mi-en">Fried Blowfish</span>
+      <span class="mi-price">¥600</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・手羽先のから揚げ</span><span class="mi-en">Fried Chicken Wings</span>
+      <span class="mi-price">¥580</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・イカゲソのから揚げ</span><span class="mi-en">Fried Squid Tentacles</span>
+      <span class="mi-price">¥600</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・明太レンコンチップス(3個)</span>
+      <span class="mi-price">¥500</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・せせりのから揚げ</span><span class="mi-en">Fried Chicken Neck</span>
+      <span class="mi-price">¥600</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・チーズボール(3個)</span><span class="mi-en">Cheese Balls</span>
+      <span class="mi-price">¥580</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・豚ハツのから揚げ</span><span class="mi-en">Fried Pork Heart</span>
+      <span class="mi-price">¥600</span>
+    </div>
+    <div class="mi">
+      <span class="mi-jp">・フライドポテト</span><span class="mi-en">French Fries</span>
+      <span class="mi-price">¥580</span>
+    </div>
+  </div>
+
+  <!-- Danger item -->
+  <div class="danger">
+    <div class="danger-stripe"></div>
+    <div class="danger-body">
+      <div class="danger-icon">🌶</div>
+      <div class="danger-text">
+        <div class="danger-name">キャロライナボール（1個）</div>
+        <div class="danger-en">Hell Spicy Cheese Balls — Guinness World Record Pepper</div>
+        <div class="danger-desc">ギネスにも認定された世界一辛い唐辛子入りチーズボール。<strong>挑戦者求む。</strong></div>
+      </div>
+      <div class="danger-price">¥250</div>
+    </div>
+    <div class="danger-stripe"></div>
+  </div>
+
+  <span class="pnum">05 / 05</span>
+</div>
+
+</body>
+</html>
